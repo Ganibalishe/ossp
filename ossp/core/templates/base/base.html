@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load static %}
+{% block head %}
+    <head>
+        
+        <meta charset="UTF-8">
+        {% block title %}
+            <title>Title</title>
+        {% endblock %}
+        <style type="text/css">
+            A {
+                text-decoration: none;
+                color: black;
+            }
+
+            A:hover {
+                text-decoration: underline;
+                color: #bbccdd;
+            }
+
+            .btn {
+                display: inline-block;
+                background: black;
+                color: #fff;
+                padding: 0.5rem 1rem;
+                text-decoration: none;
+                border-radius: 3px;
+            }
+
+            td {
+                font-family:"Courier New";
+                font-size:90%;
+                padding: 5px;
+                vertical-align: top;
+            }
+        </style>
+    </head>
+{% endblock %}
+
+<body>
+{% block header %}
+    <div style="
+            width:80%;
+            padding:55px 0 182px;
+            position: relative;
+            margin: 0 auto;
+            background-image:url({% static 'base/62RSCMV1nDU.jpg' %});
+            background-size: cover;">
+        <div style="margin-left: 25px;">
+            {% if user.is_authenticated %}
+                {% if user.commissioner %}
+                    <p>Комиссар: {{ user.commissioner.first_name }} {{ user.commissioner.surname }}</p>
+                    <p>Точка: {{ user.commissioner.point.get_name_with_section }}</p>
+                {% elif user.dispatcher %}
+                    <p>Диспетчер: {{ user.dispatcher.first_name }} {{ user.dispatcher.surname }}</p>
+                    <p>Секция: {{ user.dispatcher.section }}</p>
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
+
+
+<div style="
+            width:80%;
+            padding:55px 0 182px;
+            position: relative;
+            margin: 0 auto;">
+    <div style="margin-left:15px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<footer>
+    <div style="
+            padding:55px 0 182px;
+            margin: 0 auto;
+            background-image:url({% static 'base/DJI_0777.jpg' %});
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 80%;
+            height: 50px;">
+        <div style="margin-left: 25px;">
+            {% block footer %}
+            {% endblock %}
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

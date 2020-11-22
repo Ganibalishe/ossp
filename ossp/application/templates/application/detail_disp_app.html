@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto; width: 400px;">
+        <p><b>Номер заявки: </b>{{ object.number }}</p>
+        <p><b>Дата: </b>{{ object.created_at }}</p>
+        <p><b>Статус: </b>{% if object.status == 'sent' %} Отправлена
+        {% elif object.status == 'returned' %} Возвращена
+        {% elif object.status == 'accepted' %} Принята
+        {% elif object.status == 'app_by_com_created' %} Заявка комиссара создана
+        {% endif %} </p>
+        <p><b>Комиссар: </b>{% if object.commissioner %} {{ object.commissioner }} {% else %} В ожидание
+            подтверждения {% endif %}</p>
+        <p><b>Комментарий: </b>{{ object.comment }}</p>
+        <p><b>Точка: </b>{{ object.point.get_name_with_section }}</p>
+        <p><b>Локация: </b> {{ object.location }} км.</p>
+        <p><b>Составлена со слов пользователя: </b>{% if object.come_from_user %} Да {% else %} Нет {% endif %}</p>
+
+        <a class="btn" {% if user.dispatcher %} href="{% url 'application:dispatcher_list' %}" {% else %}
+           href="{% url 'application:commissioner_list' %}" {% endif %} >Назад</a>
+
+        {% if user.commissioner and object.status == 'sent' %}
+            <a class="btn" href="{% url 'application:dispatcher_app_accepted' object.id %}">Принять заявку</a>
+            <a class="btn" href="{% url 'application:refusal_create' object.id %}">Отказать</a>
+        {% elif user.commissioner and object.status == 'accepted' %}
+            <a class="btn" href="{% url 'application:create_commissioner_app_by_disp' object.id %}">Создать заявку</a>
+        {% endif %}
+
+    </div>
+{% endblock %}

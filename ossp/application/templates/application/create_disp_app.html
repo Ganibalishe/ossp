@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto;">
+        <form action="." method="post" enctype="multipart/form-data" class="form-horizontal">
+            {% csrf_token %}
+
+            <table style="margin: auto;">
+
+                <thead>
+                <tr>
+                    <th>Создание заявки диспетчером</th>
+                </tr>
+                {% if form.errors %}
+                    <tr>
+                        <th>{{ form.errors }} </th>
+                    </tr>
+                {% endif %}
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>
+                        <b>Точка: </b>
+                    </td>
+                    <td>
+                        {{ form.point }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Комментарий: </b>
+                    </td>
+                    <td>
+                        {{ form.comment }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Локация: </b>
+                    </td>
+                    <td>
+                        {{ form.location }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Создана по заявке пользователя: </b>
+                    </td>
+                    <td>
+                        {{ form.come_from_user }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit"
+                               value="Создать">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto; width: 400px;">
+        <p><b>Номер заявки: </b>{{ application.number }}</p>
+        <p><b>Дата: </b>{{ application.created_at }}</p>
+        <p><b>Статус: </b>{% if application.status == 'sent' %} Отправлена
+        {% elif application.status == 'returned' %} Возвращена
+        {% elif application.status == 'accepted' %} Принята
+        {% endif %} </p>
+        <p><b>Комиссар: </b>{% if application.commissioner %} {{ application.commissioner }} {% else %} В ожидание
+            подтверждения {% endif %}</p>
+        <p><b>Комментарий: </b>{{ application.comment }}</p>
+        <p><b>Составлена со слов пользователя: </b>{% if application.come_from_user %} Да {% else %} Нет {% endif %}</p>
+        <form action="." method="post" enctype="multipart/form-data" class="form-horizontal">
+            {% csrf_token %}
+            <p><b>Выберите другую точку: </b>{{ form.point }}</p>
+            <div style="display: none">
+                <input id="id_email" type="text" name="app_id" maxlength="100" value="{{ application.id }}">
+            </div>
+            <p><input type="submit"
+                      value="Создать"></p>
+
+        </form>
+        <br>
+        <br>
+        {% if refusals %}
+            <h1>Причины отказов</h1>
+            {% for refusal in refusals %}
+                <p><b>Комиссар: </b>{{ refusal.commissioner }}</p>
+                <p><b>Точка</b> {{ refusal.commissioner.point }}</p>
+                <p><b>Комментарий: </b>{{ refusal.comment }}</p>
+                <br><br>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock %}

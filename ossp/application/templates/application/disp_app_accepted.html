@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto; width: 400px;">
+        <h2>Вы действительно хотите принять заявку?</h2>
+        <form method="post" >
+            {% csrf_token %}
+            <input data="{{ object.id }}" class="btn" type="submit" value="Принять заявку">
+        </form>
+        <p><b>Номер заявки: </b>{{ object.number }}</p>
+        <p><b>Дата: </b>{{ object.created_at }}</p>
+        <p><b>Статус: </b>{% if object.status == 'sent' %} Отправлена
+        {% elif object.status == 'returned' %} Возвращена
+        {% elif object.status == 'accepted' %} Принята
+        {% endif %} </p>
+        <p><b>Комиссар: </b>{% if object.commissioner %} {{ object.commissioner }} {% else %} В ожидание
+            подтверждения {% endif %}</p>
+        <p><b>Комментарий: </b>{{ object.comment }}</p>
+        <p><b>Точка: </b>{{ object.point.get_name_with_section }}</p>
+        <p><b>Локация: </b> {{ object.location }} км.</p>
+        <p><b>Составлена со слов пользователя: </b>{% if object.come_from_user %} Да {% else %} Нет {% endif %}</p>
+        <a class="btn" href="{% url 'application:detail_app' object.id %}">Назад</a>
+    </div>
+{% endblock %}

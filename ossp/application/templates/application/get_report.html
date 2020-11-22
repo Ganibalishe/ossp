@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto; width: 400px;">
+        <h2>Фильтры для выгрузки отчета</h2>
+        <h3>Отчет будет выгружен по вашей секции</h3>
+        <form action="." method="post" enctype="multipart/form-data" class="form-horizontal">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>
+                        <b>Дата от: </b>
+                    </td>
+                    <td>
+                        {{ form.date_from }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Дата до: </b>
+                    </td>
+                    <td>
+                        {{ form.date_to }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Статус: </b>
+                    </td>
+                    <td>
+                        {{ form.status }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="btn" type="submit"
+                               value="Создать">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if successful_date_from %}
+            <b>Успешная выгрузка заявок с {{ successful_date_from }} по {{ successful_date_to }}</b>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto; width: 400px;">
+        <a class="btn" href="{% url 'application:create_commissioner_app' %}">Создать заявку</a>
+        <a class="btn" href="{% url 'users:commissioner_change_point' user.commissioner.id %}">Смена точки</a>
+    </div>
+    <br>
+    <table border="1" style="margin: auto;">
+        <thead>
+        <tr>
+            <th>Ваши заявки</th>
+            <th>Заявки от Диспетчеров</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <table style="margin: auto;">
+                    <tr>
+                        <th>Номер заявки</th>
+                        <th>Точка</th>
+                        <th>Статус</th>
+                        <th>Время</th>
+                    </tr>
+                    {% for app in applications_by_commissioner %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'application:commissioner_detail_app' app.id %}"> {{ app.number }}</a>
+                            </td>
+                            <td align="center">
+                                {{ app.point.get_name_with_section }}<br>
+                                {{ app.location }} км.
+                            </td>
+                            <td>
+                                {% if app.status == 'sent' %} Отправлена
+                                {% elif app.status == 'in_work' %} В работе
+                                {% elif app.status == 'decision' %} Решение вынесено
+                                {% elif app.status == 'closed' %} Закрыта
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ app.created_at }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td>
+            <td>
+                {% if applications_by_dispatcher %}
+                    <table style="margin: auto;">
+                        <tr>
+                            <th>Номер заявки</th>
+                            <th>Точка</th>
+                            <th>Комиссар</th>
+                            <th>Статус</th>
+                            <th>Время</th>
+
+                        </tr>
+                        {% for app in applications_by_dispatcher %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'application:detail_app' app.id %}"> {{ app.number }}</a>
+                                </td>
+                                <td align="center">
+                                    {{ app.point.get_name_with_section }}<br>
+                                    {{ app.location }} км.
+                                </td>
+                                <td>
+                                    {% if app.commissioner %}
+                                        {{ app.commissioner }}
+                                    {% else %}
+                                        ---
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if app.status == 'sent' %} Отправлена
+                                    {% elif app.status == 'returned' %} Возвращена
+                                    {% elif app.status == 'accepted' %} Принята
+                                    {% elif app.status == 'app_by_com_created' %} Создана заявка комиссаром
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ app.created_at }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

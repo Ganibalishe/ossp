@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto;">
+        <form action="." method="post" enctype="multipart/form-data" class="form-horizontal">
+            {% csrf_token %}
+            <table style="margin: auto;">
+                <thead>
+                <tr>
+                    <th>Закрыть заявку</th>
+                </tr>
+                {% if form.errors %}
+                    <tr>
+                        <th>{{ form.errors }} </th>
+                    </tr>
+                {% endif %}
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <b>Комментарии по заявке: </b>
+                    </td>
+                    <td>
+                        {{ form.comment }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="btn" type="submit"
+                               value="Создать">
+                    </td>
+                </tr>
+                <tr>
+                    <td>                    <a class="btn" {% if user.dispatcher %} href="{% url 'application:dispatcher_list' %}" {% else %}
+           href="{% url 'application:commissioner_list' %}" {% endif %} >К списку</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+{% endblock %}

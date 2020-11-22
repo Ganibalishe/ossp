@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: auto; width: 400px;">
+        <p><b>Номер заявки: </b> {{ object.number }}</p>
+        {% if object.application_by_dispatcher %}
+            <p><b>Заявкa диспетчера: </b> <a
+                    href="{% url 'application:detail_app' object.application_by_dispatcher.id %}"> {{ object.application_by_dispatcher.number }}</a>
+            </p>
+        {% endif %}
+        <p><b>Время создания заявки: </b> {{ object.created_at }}</p>
+        <p><b>Статус: </b> {% if object.status == 'sent' %} Отправлена
+        {% elif object.status == 'in_work' %} В работе
+        {% elif object.status == 'decision' %} Решение вынесено
+        {% elif object.status == 'closed' %} Заявка закрыта
+        {% endif %} </p>
+        <p><b>Вызвать скорую: </b> {% if object.need_ambulance %} Да {% else %} Нет {% endif %}</p>
+        <p><b>Вызвать полицию: </b> {% if object.need_police %} Да {% else %} Нет {% endif %}</p>
+        <p><b>Вызвать МЧС: </b> {% if object.need_mchs %} Да {% else %} Нет {% endif %}</p>
+        <p><b>Вызвать эвакуатор: </b> {% if object.need_tow_truck %} Да {% else %} Нет {% endif %}</p>
+        <p><b>Комментарий: </b> {{ object.comment }}</p>
+        {% if images %}
+            {% for image in images %}
+               <img src="{{ image.image.url }}" /><br>
+            {% endfor %}
+        {% endif %}
+
+        {% if decision %}
+            <br>
+            <p><b>Решение вынесено диспетчером: </b> {{ decision.dispatcher }}</p>
+            <p><b>Время вынесения решения: </b> {{ decision.created_at }}</p>
+            <p><b>Комментарий диспетчера: </b> {{ decision.comment }}</p>
+        {% endif %}
+
+        {% if closed_app %}
+            <br>
+            <p><b>Время закрытия услуги: </b> {{ closed_app.created_at }}</p>
+            <p><b>Комментарий: </b> {{ closed_app.comment }}</p>
+
+        {% endif %}
+        <a class="btn" {% if user.dispatcher %} href="{% url 'application:dispatcher_list' %}" {% else %}
+           href="{% url 'application:commissioner_list' %}" {% endif %} >Назад</a>
+        {% if user.dispatcher and object.status == 'sent' %}
+            <a class="btn" href="{% url 'application:create_decision' object.id %}">Создать решение</a>
+        {% endif %}
+
+        {% if object.status == 'decision' and user.commissioner %}
+            <a class="btn" href="{% url 'application:close_commissioner_app' object.id %}">Закрыть услугу</a>
+        {% endif %}
+
+    </div>
+{% endblock %}

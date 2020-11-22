@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+
+    {% if not user.is_authenticated %}
+    <form action="." method="post" enctype="multipart/form-data" class="form-horizontal">
+    {% csrf_token %}
+        {{ form.errors }}
+        <b>Номер телефона: </b>{{ form.phone }}<br>
+        <b>Пароль: </b>{{ form.password }}<br>
+        <br><br>
+        <input type="submit"
+               value="Войти">
+    </form>
+    {% else %}
+    привет
+        <form action="." method="post" enctype="multipart/form-data" class="form-horizontal">
+            {% csrf_token %}
+                <input type="submit"
+                       name="logout"
+                       id="logout"
+                       value="выйти">
+        </form>
+    {% endif %}
+{% endblock %}
