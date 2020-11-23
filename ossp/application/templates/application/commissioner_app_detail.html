@@ -21,7 +21,8 @@
         <p><b>Комментарий: </b> {{ object.comment }}</p>
         {% if images %}
             {% for image in images %}
-               <img src="{{ image.image.url }}" /><br>
+                {{ image.photo_url }}
+               <img src="{{ image.photo_url }}" /><br>
             {% endfor %}
         {% endif %}
 

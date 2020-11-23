@@ -36,7 +36,7 @@ class Point(UUIDMixin):
         verbose_name_plural = 'точки'
 
     def __str__(self):
-        return self.name
+        return self.get_name_with_section()
 
     def get_name_with_section(self):
         return f'{self.section} - {self.name}'

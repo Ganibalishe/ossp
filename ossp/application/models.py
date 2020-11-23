@@ -161,6 +161,11 @@ class PhotoForApplicationByCommissioner(CreatedAtMixin):
         verbose_name = 'фото к заявлению'
         verbose_name_plural = 'фото к заявлениям'
 
+    @property
+    def photo_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+
 
 class Decision(CreatedAtMixin, UUIDMixin):
     application_by_commissioner = models.ForeignKey(
